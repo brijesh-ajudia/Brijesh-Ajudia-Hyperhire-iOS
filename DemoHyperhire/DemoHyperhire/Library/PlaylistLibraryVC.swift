@@ -17,11 +17,14 @@ class PlaylistLibraryVC: UIViewController {
     @IBOutlet weak var tblSongs: UITableView!
     
     var playlistName: String = ""
+    
+    var playlist: Playlists?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.lblPlaylist.text = self.playlistName
+        self.lblPlaylist.text = self.playlist?.name ?? ""
+        self.lblSongsCount.text = "\(self.playlist?.songCount ?? 0) songs"
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.02) {
             self.viewMain.applyGradientBackground()
@@ -64,17 +67,51 @@ extension PlaylistLibraryVC {
     
     @IBAction func addSongsAction(_ sender: UIButton) {
         let searchSongVC = Utils.loadVC(strStoryboardId: StoryBoard.SB_LIBRARY, strVCId: ViewControllerID.VC_SearchSong) as! SearchSongVC
+        searchSongVC.delegate = self
         self.navigationController?.pushViewController(searchSongVC, animated: true)
     }
 }
 
+extension PlaylistLibraryVC: AddSongDelegate {
+    func addSong(song: SongsModelClass) {
+        let id = self.playlist?.playlistId ?? ""
+        
+        var songDict: [String: Any] = [:]
+        
+        songDict["songId"]  = String(song.trackId ?? 0)
+        songDict["title"]  = song.trackName ?? ""
+        songDict["artist"]  = song.artistName ?? ""
+        songDict["albumCover"]  = song.artworkUrl60 ?? ""
+        
+        PlaylistAPI.sharedInstance.addSongToPlaylist(playlistId: id, song: songDict) { result in
+            switch result {
+            case .success(let success):
+                
+                
+                
+            case .failure(let error):
+                print("")
+            }
+        }
+    }
+    
+    
+}
+
 extension PlaylistLibraryVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return self.playlist?.songs?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PlaylistTVCell", for: indexPath) as! PlaylistTVCell
+        
+        let song = self.playlist?.songs?[indexPath.row]
+        
+        cell.imgCover.loadImageFromProfile(urlString: song?.albumCover ?? "", placeholderImage: UIImage(named: "img_SongPH"))
+        
+        cell.lblSongName.text = song?.title ?? ""
+        cell.lblSongBy.text = song?.artist ?? ""
         
         cell.imgCover.cornerRadiuss = 0
         cell.btnMore.isHidden = false

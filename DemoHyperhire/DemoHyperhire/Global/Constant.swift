@@ -16,6 +16,7 @@ let sceneDelegate = windowScene?.delegate as? SceneDelegate
  
 let screenSize = UIScreen.main.bounds.size
 
+let BASE_URL = "https://itunes.apple.com/search"
 
 struct StoryBoard {
     static let SB_MAIN = "Main"

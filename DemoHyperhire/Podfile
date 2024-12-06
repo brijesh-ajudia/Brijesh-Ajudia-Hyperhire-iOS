@@ -15,7 +15,9 @@ pod 'SDWebImage'
 
 # Firebase
 pod 'FirebaseCrashlytics'
-pod 'FirebaseFirestore'
+pod 'Firebase/Firestore'
+pod 'Firebase/Database'
+pod 'Firebase/Storage'
 
 # Bottom Sheet Floating Panel
 pod 'FloatingPanel'

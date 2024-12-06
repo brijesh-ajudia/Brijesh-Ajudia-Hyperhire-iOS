@@ -14,7 +14,7 @@ class YourLibraryVC: UIViewController {
     
     var fpcPlaylist: FloatingPanelController!
     
-    //var allLibrary: [LibraryItem] = []
+    var allPlaylists: [Playlists] = []
     
     var menuListStyle: MenuListType = .ListView {
         didSet {
@@ -40,6 +40,16 @@ class YourLibraryVC: UIViewController {
         self.clvList.isUserInteractionEnabled = true
         
         self.updateLayout()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.getAllPlaylists { isDataFetch, modalClass in
+            if isDataFetch == true {
+                self.clvList.reloadData()
+            }
+        }
     }
     
     // MARK: - Layout Updates
@@ -74,6 +84,22 @@ class YourLibraryVC: UIViewController {
         return layout
     }
 
+}
+
+extension YourLibraryVC {
+    
+    func getAllPlaylists(_ callback: ((_ isDataFetch: Bool, _ modalClass: [Playlists]) -> Void)?) {
+        PlaylistAPI.sharedInstance.fetchPlaylists { playLists in
+            if playLists.count > 0 {
+                self.allPlaylists = playLists
+                callback?(true, playLists)
+            }
+        } failure: { error in
+            print("Not fetching playlists Error ->", error.localizedDescription)
+            callback?(false, [])
+        }
+
+    }
 }
 
 // MARK: - Floating Controller for Country Selection
@@ -119,10 +145,38 @@ extension YourLibraryVC: PlaylistDelagate {
 
 extension YourLibraryVC:  CreatPlaylistDelagate {
     func createdPlaylist(name: String) {
-        //Move to playlist page
-        let playlistLibraryVC = Utils.loadVC(strStoryboardId: StoryBoard.SB_LIBRARY, strVCId: ViewControllerID.VC_PlaylistLibrary) as! PlaylistLibraryVC
-        playlistLibraryVC.playlistName = name
-        self.navigationController?.pushViewController(playlistLibraryVC, animated: true)
+        
+        let id = PlaylistAPI.db.document().documentID
+        
+        var playlist: [String: Any] = [:]
+        playlist["playlistId"] = id
+        playlist["name"] = name
+        playlist["cover"] = ""
+        playlist["owner"] = "self"
+        playlist["songCount"] = 0
+        playlist["songs"] = []
+        
+        PlaylistAPI.sharedInstance.createPlaylist(playlist: playlist) { result in
+            switch result {
+            case .success(let success):
+                
+                let playlistLibraryVC = Utils.loadVC(strStoryboardId: StoryBoard.SB_LIBRARY, strVCId: ViewControllerID.VC_PlaylistLibrary) as! PlaylistLibraryVC
+                playlistLibraryVC.playlistName = name
+                
+                do {
+                    let playList = try DictionaryDecoder().decode(Playlists.self, from: playlist)
+                    playlistLibraryVC.playlist = playList
+                }
+                catch let error {
+                    print("Couldn't get in Playlist as", error.localizedDescription)
+                }
+                
+                self.navigationController?.pushViewController(playlistLibraryVC, animated: true)
+                break;
+            case .failure(let error):
+                print("Not created playlist Error ->", error.localizedDescription)
+            }
+        }
     }
     
     
@@ -147,7 +201,7 @@ extension YourLibraryVC {
 
 extension YourLibraryVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return self.allPlaylists.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -155,15 +209,21 @@ extension YourLibraryVC: UICollectionViewDelegate, UICollectionViewDataSource, U
         case .GridView:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GridCVCell", for: indexPath) as! GridCVCell
             
-            cell.lblPlayList.text = "Playlist"
-            cell.lblTotalSongs.text = "• 220 Songs"
+            let playList = self.allPlaylists[indexPath.item]
+            
+            cell.imgPlaylist.loadImageFromProfile(urlString: playList.cover ?? "")
+            cell.lblPlayList.text = playList.name ?? ""
+            cell.lblTotalSongs.text = "Playlist • \(playList.songCount ?? 0) Songs"
             
             return cell
         case .ListView:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ListCVCell", for: indexPath) as! ListCVCell
             
-            cell.lblPlayList.text = "Playlist"
-            cell.lblTotalSongs.text = "• 220 Songs"
+            let playList = self.allPlaylists[indexPath.item]
+            
+            cell.imgPlaylist.loadImageFromProfile(urlString: playList.cover ?? "")
+            cell.lblPlayList.text = playList.name ?? ""
+            cell.lblTotalSongs.text = "Playlist • \(playList.songCount ?? 0) Songs"
             
             return cell
         }
