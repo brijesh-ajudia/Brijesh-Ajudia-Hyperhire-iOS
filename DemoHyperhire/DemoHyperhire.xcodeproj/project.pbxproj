@@ -28,9 +28,12 @@
 		614111F72D01E25400A7CFA9 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614111F62D01E25400A7CFA9 /* SearchVC.swift */; };
 		614111F92D01E29E00A7CFA9 /* Library.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 614111F82D01E29E00A7CFA9 /* Library.storyboard */; };
 		614111FB2D01E2B000A7CFA9 /* YourLibraryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614111FA2D01E2B000A7CFA9 /* YourLibraryVC.swift */; };
+		9B5189120BF1998B28DEE38C /* Pods_DemoHyperhire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DDB40819977FA7DD41C2D95 /* Pods_DemoHyperhire.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3807DFE430448942C40B0E1C /* Pods-DemoHyperhire.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DemoHyperhire.debug.xcconfig"; path = "Target Support Files/Pods-DemoHyperhire/Pods-DemoHyperhire.debug.xcconfig"; sourceTree = "<group>"; };
+		3CEB2C71F33B0842D971FD01 /* Pods-DemoHyperhire.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DemoHyperhire.release.xcconfig"; path = "Target Support Files/Pods-DemoHyperhire/Pods-DemoHyperhire.release.xcconfig"; sourceTree = "<group>"; };
 		610FC6602D0209DF00B0D66F /* UITableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
 		610FC6632D020D1500B0D66F /* GridCVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridCVCell.swift; sourceTree = "<group>"; };
 		610FC6642D020D1500B0D66F /* GridCVCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GridCVCell.xib; sourceTree = "<group>"; };
@@ -54,6 +57,7 @@
 		614111F62D01E25400A7CFA9 /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
 		614111F82D01E29E00A7CFA9 /* Library.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Library.storyboard; sourceTree = "<group>"; };
 		614111FA2D01E2B000A7CFA9 /* YourLibraryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourLibraryVC.swift; sourceTree = "<group>"; };
+		9DDB40819977FA7DD41C2D95 /* Pods_DemoHyperhire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DemoHyperhire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,12 +65,31 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9B5189120BF1998B28DEE38C /* Pods_DemoHyperhire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0DA031DE3241D682C3CEB124 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3807DFE430448942C40B0E1C /* Pods-DemoHyperhire.debug.xcconfig */,
+				3CEB2C71F33B0842D971FD01 /* Pods-DemoHyperhire.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		48D44263405B386560FF33CA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9DDB40819977FA7DD41C2D95 /* Pods_DemoHyperhire.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		610FC6622D020CDE00B0D66F /* LibraryCVCells */ = {
 			isa = PBXGroup;
 			children = (
@@ -83,6 +106,8 @@
 			children = (
 				614111CC2D01DB4C00A7CFA9 /* DemoHyperhire */,
 				614111CB2D01DB4C00A7CFA9 /* Products */,
+				0DA031DE3241D682C3CEB124 /* Pods */,
+				48D44263405B386560FF33CA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -183,9 +208,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 614111DE2D01DB5500A7CFA9 /* Build configuration list for PBXNativeTarget "DemoHyperhire" */;
 			buildPhases = (
+				E748ACE55D5707F452DD5091 /* [CP] Check Pods Manifest.lock */,
 				614111C62D01DB4C00A7CFA9 /* Sources */,
 				614111C72D01DB4C00A7CFA9 /* Frameworks */,
 				614111C82D01DB4C00A7CFA9 /* Resources */,
+				E2270C84F96968C4FDA24B4A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -246,6 +273,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		E2270C84F96968C4FDA24B4A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DemoHyperhire/Pods-DemoHyperhire-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DemoHyperhire/Pods-DemoHyperhire-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DemoHyperhire/Pods-DemoHyperhire-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E748ACE55D5707F452DD5091 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DemoHyperhire-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		614111C62D01DB4C00A7CFA9 /* Sources */ = {
@@ -411,6 +480,7 @@
 		};
 		614111DF2D01DB5500A7CFA9 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3807DFE430448942C40B0E1C /* Pods-DemoHyperhire.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -440,6 +510,7 @@
 		};
 		614111E02D01DB5500A7CFA9 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3CEB2C71F33B0842D971FD01 /* Pods-DemoHyperhire.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
