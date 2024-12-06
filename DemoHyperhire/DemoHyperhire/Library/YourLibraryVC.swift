@@ -6,10 +6,13 @@
 //
 
 import UIKit
+import FloatingPanel
 
 class YourLibraryVC: UIViewController {
     
     @IBOutlet weak var clvList: UICollectionView!
+    
+    var fpcPlaylist: FloatingPanelController!
     
     //var allLibrary: [LibraryItem] = []
     
@@ -73,8 +76,64 @@ class YourLibraryVC: UIViewController {
 
 }
 
+// MARK: - Floating Controller for Country Selection
+extension YourLibraryVC: FloatingPanelControllerDelegate {
+    func setUpFloatingForLabourFilter() {
+        fpcPlaylist = FloatingPanelController()
+        let appearance = SurfaceAppearance()
+        appearance.cornerRadius = 8
+        appearance.backgroundColor = UIColor._333333
+        fpcPlaylist.surfaceView.appearance = appearance
+        fpcPlaylist.delegate = self
+        fpcPlaylist.isRemovalInteractionEnabled = true
+        fpcPlaylist.surfaceView.containerView.layer.cornerRadius = 0.0
+        fpcPlaylist.surfaceView.containerView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        fpcPlaylist.surfaceView.grabberHandle.isHidden = true
+        if let playlistVC = Utils.loadVC(strStoryboardId: StoryBoard.SB_LIBRARY, strVCId: ViewControllerID.VC_Playlist) as? PlaylistVC {
+            playlistVC.delegate = self
+            fpcPlaylist.set(contentViewController: playlistVC)
+            self.present(fpcPlaylist, animated: true, completion: nil)
+        }
+    }
+    
+    func floatingPanel(_ vc: FloatingPanelController, layoutFor newCollection: UITraitCollection) -> FloatingPanelLayout {
+        if vc == fpcPlaylist {
+            return SetUpPlaylist()
+        }
+        else {
+            return defaultSelectionView()
+        }
+    }
+}
+
+extension YourLibraryVC: PlaylistDelagate {
+    func filterLabour(isClicked: Bool) {
+        self.fpcPlaylist.dismiss(animated: true) {
+            let createPlaylist = Utils.loadVC(strStoryboardId: StoryBoard.SB_LIBRARY, strVCId: ViewControllerID.VC_CreatPlaylist) as! CreatPlaylistVC
+            createPlaylist.delegate = self
+            createPlaylist.modalPresentationStyle = .pageSheet
+            self.present(createPlaylist, animated: true, completion: nil)
+        }
+    }
+}
+
+extension YourLibraryVC:  CreatPlaylistDelagate {
+    func createdPlaylist(name: String) {
+        //Move to playlist page
+        let playlistLibraryVC = Utils.loadVC(strStoryboardId: StoryBoard.SB_LIBRARY, strVCId: ViewControllerID.VC_PlaylistLibrary) as! PlaylistLibraryVC
+        playlistLibraryVC.playlistName = name
+        self.navigationController?.pushViewController(playlistLibraryVC, animated: true)
+    }
+    
+    
+}
+
 // MARK: - Button Actions
 extension YourLibraryVC {
+    
+    @IBAction func addPlaylistAction(_ sender: UIButton) {
+        self.setUpFloatingForLabourFilter()
+    }
     
     @IBAction func gridListAction(_ sender: UIButton) {
         self.menuListStyle = (self.menuListStyle == .GridView) ? .ListView : .GridView

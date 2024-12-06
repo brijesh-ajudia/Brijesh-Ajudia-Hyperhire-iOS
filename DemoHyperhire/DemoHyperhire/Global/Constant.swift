@@ -31,6 +31,10 @@ struct ViewControllerID {
     static let VC_Search = "SearchVC"
     
     static let VC_YourLibrary = "YourLibraryVC"
+    static let VC_Playlist = "PlaylistVC"
+    static let VC_CreatPlaylist = "CreatPlaylistVC"
+    static let VC_PlaylistLibrary = "PlaylistLibraryVC"
+    static let VC_SearchSong = "SearchSongVC"
 }
 
 struct AppFont {
