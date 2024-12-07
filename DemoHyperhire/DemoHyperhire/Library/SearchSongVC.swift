@@ -33,7 +33,7 @@ class SearchSongVC: BaseViewController {
         self.txtSearch.tag = 0
         self.txtSearch.delegate = self
         self.txtSearch.keyboardType = .default
-        self.txtSearch.setAttributesPlaceHolder_Color(placeHolderString: "Enter playlist name")
+        self.txtSearch.setAttributesPlaceHolder_Color(placeHolderString: "Search", fontSize: 15.0)
         self.txtSearch.keyboardAppearance = .dark
         self.txtSearch.returnKeyType = .search
         self.txtSearch.addTarget(self, action: #selector(searchValidate), for: .editingDidEnd)
@@ -77,11 +77,13 @@ extension SearchSongVC {
                 switch result {
                 case .success(let songs):
                     print("Result Count: \(songs.resultCount ?? 0)")
-                    
-                    self.allSongs = songs.results ?? []
-                    self.tblSongs.reloadData()
-                    
                     self.view.resignFirstResponder()
+                    
+                    DispatchQueue.main.async {
+                        self.allSongs = songs.results ?? []
+                        self.tblSongs.reloadData()
+                    }
+                    
                 case .failure(let error):
                     print("Error: \(error.localizedDescription)")
                 }
@@ -153,7 +155,6 @@ extension SearchSongVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let song = self.allSongs[indexPath.row]
         self.delegate?.addSong(song: song)
-        self.navigationController?.popViewController(animated: true)
     }
     
 }

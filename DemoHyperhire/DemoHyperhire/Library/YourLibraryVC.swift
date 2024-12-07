@@ -161,7 +161,6 @@ extension YourLibraryVC:  CreatPlaylistDelagate {
             case .success(let success):
                 
                 let playlistLibraryVC = Utils.loadVC(strStoryboardId: StoryBoard.SB_LIBRARY, strVCId: ViewControllerID.VC_PlaylistLibrary) as! PlaylistLibraryVC
-                playlistLibraryVC.playlistName = name
                 
                 do {
                     let playList = try DictionaryDecoder().decode(Playlists.self, from: playlist)
@@ -231,6 +230,10 @@ extension YourLibraryVC: UICollectionViewDelegate, UICollectionViewDataSource, U
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+        let playList = self.allPlaylists[indexPath.item]
+        let playlistLibraryVC = Utils.loadVC(strStoryboardId: StoryBoard.SB_LIBRARY, strVCId: ViewControllerID.VC_PlaylistLibrary) as! PlaylistLibraryVC
+        playlistLibraryVC.playlist = playList
+        self.navigationController?.pushViewController(playlistLibraryVC, animated: true)
     }
     
 }

@@ -16,8 +16,6 @@ class PlaylistLibraryVC: UIViewController {
     
     @IBOutlet weak var tblSongs: UITableView!
     
-    var playlistName: String = ""
-    
     var playlist: Playlists?
 
     override func viewDidLoad() {
@@ -83,15 +81,26 @@ extension PlaylistLibraryVC: AddSongDelegate {
         songDict["artist"]  = song.artistName ?? ""
         songDict["albumCover"]  = song.artworkUrl60 ?? ""
         
-        PlaylistAPI.sharedInstance.addSongToPlaylist(playlistId: id, song: songDict) { result in
-            switch result {
-            case .success(let success):
-                
-                
-                
-            case .failure(let error):
-                print("")
+        do {
+            let song = try DictionaryDecoder().decode(Songs.self, from: songDict)
+            PlaylistAPI.sharedInstance.addSongToPlaylist(playlistId: id, song: song) { result in
+                switch result {
+                case .success(let success):
+                    print("Song added")
+                    
+                    PlaylistAPI.sharedInstance.fetchPlaylist(id: id) { playlist in
+                        self.playlist = playlist
+                        self.lblSongsCount.text = "\(playlist?.songCount ?? 0) songs"
+                        self.tblSongs.reloadData()
+                    }
+                    
+                case .failure(let error):
+                    print("Songs not added Error", error.localizedDescription)
+                }
             }
+        }
+        catch let error {
+            print("Couldn't get in Playlist as", error.localizedDescription)
         }
     }
     

@@ -23,8 +23,8 @@ extension UITextField {
         
     }
     
-    func setAttributesPlaceHolder_Color(placeHolderString: String, placeHolderColor: String = "C6C6C6") {
-        self.attributedPlaceholder = NSAttributedString(string: placeHolderString, attributes: [NSAttributedString.Key.foregroundColor : UIColor(hex: placeHolderColor)!, NSAttributedString.Key.font: AppFont.font(type: .Regular, size: 24.0)])
+    func setAttributesPlaceHolder_Color(placeHolderString: String, placeHolderColor: String = "C6C6C6", fontSize: CGFloat = 24.0) {
+        self.attributedPlaceholder = NSAttributedString(string: placeHolderString, attributes: [NSAttributedString.Key.foregroundColor : UIColor(hex: placeHolderColor)!, NSAttributedString.Key.font: AppFont.font(type: .Regular, size: fontSize)])
     }
     
     func setAttributesPlaceHolder_Color_CompareTxt(placeHolderString: String, placeHolderColor: String = "C6C6C6") {
